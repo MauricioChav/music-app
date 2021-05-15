@@ -13,10 +13,26 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [
+	'uses' => 'App\Http\Controllers\HomeController@mainSite',
+	'as' => 'index']);
+
+
+//Te crea todas las rutas que corresponden a las funciones
+
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::group(['middleware' => 'auth'], function(){
+
+	Route::get('albums/chooseCreate', 'App\Http\Controllers\AlbumController@chooseCreate')->name('albums.chooseCreate');
+	Route::resource('/albums', 'App\Http\Controllers\AlbumController');
+
+	Route::resource('/songs', 'App\Http\Controllers\SongController');
+
+	Route::get('/admin', [
+	'uses' => 'App\Http\Controllers\HomeController@index',
+	'as' => 'home'
+	]);
+});
+

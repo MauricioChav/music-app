@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use Auth;
 use App\Models\Playlist;
 use Illuminate\Http\Request;
 
 class PlaylistController extends Controller
 {
+
+    /*NOT USED*/
+
     /**
      * Display a listing of the resource.
      *
@@ -14,7 +18,10 @@ class PlaylistController extends Controller
      */
     public function index()
     {
-        //
+        $playlists = Playlist::where('user_id', Auth::user()->id)->get();
+
+        return view('playlists.index')
+        ->with('playlists', $playlists)
     }
 
     /**
@@ -24,7 +31,7 @@ class PlaylistController extends Controller
      */
     public function create()
     {
-        //
+        return view('playlists.create');
     }
 
     /**
@@ -35,7 +42,13 @@ class PlaylistController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $playlist = Playlist::create([
+            'user_id' => Auth::user()->id,
+            'name' => $request->name
+        ]);
+
+        return redirect()->back();
+
     }
 
     /**
@@ -44,7 +57,7 @@ class PlaylistController extends Controller
      * @param  \App\Models\Playlist  $playlist
      * @return \Illuminate\Http\Response
      */
-    public function show(Playlist $playlist)
+    public function show($id)
     {
         //
     }

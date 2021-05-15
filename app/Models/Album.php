@@ -10,10 +10,10 @@ class Album extends Model
     use HasFactory;
 
     protected $fillable = [
-		'name','artist','year'
+		'user_id', 'name','artist','year', 'cover'
 	];
 
 	public function songs(){
-		return $this->hasMany(Song::class);
+		return $this->hasMany(Song::class)->orderBy('track', 'asc');
 	}
 }
